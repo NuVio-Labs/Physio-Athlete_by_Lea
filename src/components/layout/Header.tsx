@@ -21,7 +21,7 @@ export default function Header({ minimal = false }: HeaderProps) {
   const [menuOpen, setMenuOpen]   = useState(false)
   const [scrolled, setScrolled]   = useState(false)
   const { pathname }              = useLocation()
-  const isHome                    = pathname === '/'
+  const isHome                    = pathname === '/' || pathname === ''
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50)
@@ -48,7 +48,7 @@ export default function Header({ minimal = false }: HeaderProps) {
       window.location.href = '/' + href
       return
     }
-    scrollTo(href)
+    setTimeout(() => scrollTo(href), 50)
   }
 
   return (
