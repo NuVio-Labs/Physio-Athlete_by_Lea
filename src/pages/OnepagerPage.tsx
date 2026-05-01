@@ -1,12 +1,42 @@
 import { Helmet } from 'react-helmet-async'
+import { useState, useEffect } from 'react'
 import Button from '../components/ui/Button'
 import imgHero from '../assets/images/hero-behandlung.webp'
 import imgPortrait from '../assets/images/portrait-lea.webp'
 import imgTrainingSenioren from '../assets/images/training-senioren.webp'
-import imgTrainingKorrektur from '../assets/images/einblicke-training-korrektur.webp'
-import imgPhysiobox from '../assets/images/einblicke-physiobox.webp'
-import imgSportfest from '../assets/images/einblicke-sportfest.webp'
-import imgSpagat from '../assets/images/einblicke-spagat.webp'
+// Behandlung
+import imgBehandlungKnie from '../assets/images/behandlung-knie.webp'
+import imgBehandlungZelt from '../assets/images/behandlung-zelt.webp'
+import imgBehandlungLiege from '../assets/images/behandlung-liege.webp'
+// Training
+import imgTrainingBosuSenior from '../assets/images/training-bosu-senior.webp'
+import imgTrainingKorrekturGym from '../assets/images/training-korrektur-gym.webp'
+import imgTrainingBosuBall from '../assets/images/training-bosu-ball.webp'
+import imgTrainingMedball from '../assets/images/training-medball.webp'
+import imgTrainingStraddle from '../assets/images/training-straddle.webp'
+// Verein
+import imgVereinFootballTeam from '../assets/images/verein-football-team.webp'
+import imgVereinFootballSpiel from '../assets/images/verein-football-spiel.webp'
+import imgVereinFootballWiese from '../assets/images/verein-football-wiese.webp'
+import imgVereinFootballJugend from '../assets/images/verein-football-jugend.webp'
+import imgVereinFootballOffiziell from '../assets/images/verein-football-offiziell.webp'
+import imgVereinGrossgruppe from '../assets/images/verein-grossgruppe.webp'
+import imgVereinHandballMg from '../assets/images/verein-handball-mg.webp'
+import imgVereinHandballGross from '../assets/images/verein-handball-gross.webp'
+import imgVereinHandballTeam from '../assets/images/verein-handball-team.webp'
+import imgVereinJugendFussball from '../assets/images/verein-jugend-fussball.webp'
+import imgVereinRugbyDamen from '../assets/images/verein-rugby-damen.webp'
+import imgVereinRugbyHerren from '../assets/images/verein-rugby-herren.webp'
+import imgVereinRugbyEvent from '../assets/images/verein-rugby-event.webp'
+// Training
+import imgTrainingBosuSquad from '../assets/images/training-bosu-squad.webp'
+import imgTrainingSpagat from '../assets/images/training-spagat.webp'
+import imgTrainingMedballBosu from '../assets/images/training-medball-bosu.webp'
+// Portrait
+import imgPortraitSchlitten from '../assets/images/portrait-schlitten.webp'
+import imgPortraitRasen from '../assets/images/portrait-rasen.webp'
+import imgPortraitSportplatz from '../assets/images/portrait-sportplatz.webp'
+import imgPortraitTrikot from '../assets/images/portrait-trikot.webp'
 
 // ─── Daten ────────────────────────────────────────────────────────────────────
 
@@ -79,6 +109,287 @@ const regions = [
   { name: 'Mönchengladbach', note: '' },
   { name: 'Viersen',         note: '' },
 ]
+
+// ─── LeadFunnel ───────────────────────────────────────────────────────────────
+
+const WEB3FORMS_KEY = 'c0affb53-cb99-4cba-986f-d18b46f5456d'
+
+type FunnelData = {
+  ziel: string
+  geschlecht: string
+  alter: string
+  beschreibung: string
+  vorname: string
+  nachname: string
+  beruf: string
+  telefon: string
+  email: string
+}
+
+const initialData: FunnelData = {
+  ziel: '', geschlecht: '', alter: '', beschreibung: '',
+  vorname: '', nachname: '', beruf: '', telefon: '', email: '',
+}
+
+function LeadFunnel() {
+  const [step, setStep] = useState(0)
+  const [data, setData] = useState<FunnelData>(initialData)
+  const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
+
+  function set(key: keyof FunnelData, value: string) {
+    setData(d => ({ ...d, [key]: value }))
+  }
+
+  async function submit() {
+    setSubmitting(true)
+    setError('')
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject: `Neue Anfrage von ${data.vorname} ${data.nachname}`,
+          Ziel: data.ziel,
+          Geschlecht: data.geschlecht,
+          Alter: data.alter,
+          Beschreibung: data.beschreibung,
+          Vorname: data.vorname,
+          Nachname: data.nachname,
+          Beruf: data.beruf,
+          Telefon: data.telefon,
+          email: data.email,
+        }),
+      })
+      if (res.ok) {
+        setSubmitted(true)
+      } else {
+        setError('Etwas hat nicht geklappt. Bitte versuche es erneut.')
+      }
+    } catch {
+      setError('Keine Verbindung. Bitte prüfe deine Internetverbindung.')
+    }
+    setSubmitting(false)
+  }
+
+  const zielOptions = [
+    'Abnehmen', 'Zunehmen', 'Muskelaufbau', 'Gesündere Lebensweise',
+    'Running', 'Hyrox', 'Triathlon', 'Andere athletische Sportarten',
+  ]
+  const geschlechtOptions = ['Weiblich', 'Männlich', 'Divers']
+  const alterOptions = ['14–18', '18–24', '25–34', '35–44', '45+']
+  const berufOptions = ['Profi-Athlet', 'Amateur', 'Hobby-Sportler', 'Nicht-Sportler']
+
+  const chipBase = 'px-4 py-2.5 rounded-full border text-sm font-medium transition-all duration-150 cursor-pointer select-none'
+  const chipActive = 'bg-[var(--color-accent)] border-[var(--color-accent)] text-white'
+  const chipInactive = 'bg-transparent border-white/30 text-white hover:border-white/60'
+
+  const inputCls = 'w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-white/50 text-sm'
+
+  if (submitted) {
+    return (
+      <div className="text-center py-8">
+        <div className="w-14 h-14 rounded-full bg-[var(--color-accent)] flex items-center justify-center mx-auto mb-6">
+          <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h3 className="font-heading font-bold text-white text-2xl mb-3">Danke, {data.vorname}!</h3>
+        <p className="text-white/70 text-base leading-relaxed max-w-sm mx-auto">
+          Ich melde mich innerhalb von 24 Stunden bei dir.
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <div>
+      {/* Progress bar */}
+      <div className="flex gap-1.5 mb-8">
+        {[0,1,2,3,4].map(i => (
+          <div key={i} className="flex-1 h-0.5 rounded-full overflow-hidden bg-white/20">
+            <div
+              className="h-full bg-[var(--color-accent)] transition-all duration-500"
+              style={{ width: i <= step ? '100%' : '0%' }}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Step 0 */}
+      {step === 0 && (
+        <div>
+          <h3 className="font-heading font-bold text-white text-xl md:text-2xl mb-2">Wie kann ich dir helfen?</h3>
+          <p className="text-white/50 text-sm mb-6">Wähle dein Hauptziel</p>
+          <div className="flex flex-wrap gap-2 mb-8">
+            {zielOptions.map(o => (
+              <button key={o} onClick={() => set('ziel', o)}
+                className={`${chipBase} ${data.ziel === o ? chipActive : chipInactive}`}>
+                {o}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={() => data.ziel && setStep(1)}
+            disabled={!data.ziel}
+            className="px-8 py-3 rounded-full bg-[var(--color-accent)] text-white font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Weiter →
+          </button>
+        </div>
+      )}
+
+      {/* Step 1 */}
+      {step === 1 && (
+        <div>
+          <h3 className="font-heading font-bold text-white text-xl md:text-2xl mb-2">Was ist dein Geschlecht?</h3>
+          <p className="text-white/50 text-sm mb-6"> </p>
+          <div className="flex flex-wrap gap-2 mb-8">
+            {geschlechtOptions.map(o => (
+              <button key={o} onClick={() => set('geschlecht', o)}
+                className={`${chipBase} ${data.geschlecht === o ? chipActive : chipInactive}`}>
+                {o}
+              </button>
+            ))}
+          </div>
+          <div className="flex gap-3">
+            <button onClick={() => setStep(0)} className="px-6 py-3 rounded-full border border-white/30 text-white text-sm font-medium hover:border-white/60 transition-colors">← Zurück</button>
+            <button onClick={() => data.geschlecht && setStep(2)} disabled={!data.geschlecht}
+              className="px-8 py-3 rounded-full bg-[var(--color-accent)] text-white font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+              Weiter →
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Step 2 */}
+      {step === 2 && (
+        <div>
+          <h3 className="font-heading font-bold text-white text-xl md:text-2xl mb-2">Wie alt bist du?</h3>
+          <p className="text-white/50 text-sm mb-6"> </p>
+          <div className="flex flex-wrap gap-2 mb-8">
+            {alterOptions.map(o => (
+              <button key={o} onClick={() => set('alter', o)}
+                className={`${chipBase} ${data.alter === o ? chipActive : chipInactive}`}>
+                {o}
+              </button>
+            ))}
+          </div>
+          <div className="flex gap-3">
+            <button onClick={() => setStep(1)} className="px-6 py-3 rounded-full border border-white/30 text-white text-sm font-medium hover:border-white/60 transition-colors">← Zurück</button>
+            <button onClick={() => data.alter && setStep(3)} disabled={!data.alter}
+              className="px-8 py-3 rounded-full bg-[var(--color-accent)] text-white font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+              Weiter →
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Step 3 */}
+      {step === 3 && (
+        <div>
+          <h3 className="font-heading font-bold text-white text-xl md:text-2xl mb-2">Was ist dein körperliches Ziel und mit welchen Problemen hattest du bislang zu kämpfen?</h3>
+          <p className="text-white/50 text-sm mb-6"> </p>
+          <textarea
+            value={data.beschreibung}
+            onChange={e => set('beschreibung', e.target.value)}
+            rows={4}
+            placeholder="Beschreibe kurz deine Situation..."
+            className={`${inputCls} resize-none mb-8`}
+          />
+          <div className="flex gap-3">
+            <button onClick={() => setStep(2)} className="px-6 py-3 rounded-full border border-white/30 text-white text-sm font-medium hover:border-white/60 transition-colors">← Zurück</button>
+            <button onClick={() => data.beschreibung.trim() && setStep(4)} disabled={!data.beschreibung.trim()}
+              className="px-8 py-3 rounded-full bg-[var(--color-accent)] text-white font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+              Weiter →
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Step 4 */}
+      {step === 4 && (
+        <div>
+          <h3 className="font-heading font-bold text-white text-xl md:text-2xl mb-2">Bitte trage hier deine Daten ein</h3>
+          <p className="text-white/50 text-sm mb-6"> </p>
+          <div className="flex flex-col gap-3 mb-8">
+            <div className="grid grid-cols-2 gap-3">
+              <input value={data.vorname} onChange={e => set('vorname', e.target.value)} placeholder="Vorname" className={inputCls} />
+              <input value={data.nachname} onChange={e => set('nachname', e.target.value)} placeholder="Nachname" className={inputCls} />
+            </div>
+            <select value={data.beruf} onChange={e => set('beruf', e.target.value)}
+              className={`${inputCls} appearance-none`}>
+              <option value="" disabled>Wähle deinen Beruf / Sport-Level</option>
+              {berufOptions.map(o => <option key={o} value={o}>{o}</option>)}
+            </select>
+            <input value={data.telefon} onChange={e => set('telefon', e.target.value)} placeholder="Telefonnummer" type="tel" className={inputCls} />
+            <input value={data.email} onChange={e => set('email', e.target.value)} placeholder="E-Mail-Adresse" type="email" className={inputCls} />
+          </div>
+          {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
+          <div className="flex gap-3">
+            <button onClick={() => setStep(3)} className="px-6 py-3 rounded-full border border-white/30 text-white text-sm font-medium hover:border-white/60 transition-colors">← Zurück</button>
+            <button
+              onClick={submit}
+              disabled={submitting || !data.vorname || !data.email}
+              className="px-8 py-3 rounded-full bg-[var(--color-accent)] text-white font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              {submitting ? 'Wird gesendet…' : 'Absenden →'}
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ─── SlideshowCard ────────────────────────────────────────────────────────────
+
+interface Slide { src: string; alt: string; position?: string }
+
+function SlideshowCard({ label, slides, className = '' }: { label: string; slides: Slide[]; className?: string }) {
+  const [current, setCurrent] = useState(0)
+
+  useEffect(() => {
+    if (slides.length <= 1) return
+    const timer = setTimeout(() => {
+      setCurrent(i => (i + 1) % slides.length)
+    }, 5000)
+    return () => clearTimeout(timer)
+  }, [current, slides.length])
+
+  return (
+    <div className={`relative rounded-2xl overflow-hidden ${className}`}>
+      {slides.map((slide, i) => (
+        <img
+          key={slide.src}
+          src={slide.src}
+          alt={slide.alt}
+          className={`w-full h-full object-cover transition-opacity duration-700 ease-in-out ${i === 0 ? 'relative block' : 'absolute inset-0'}`}
+          style={{
+            opacity: i === current ? 1 : 0,
+            objectPosition: slide.position ?? 'center top',
+          }}
+        />
+      ))}
+      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-4 z-10">
+        <span className="text-white text-xs font-semibold tracking-widest uppercase">{label}</span>
+        {slides.length > 1 && (
+          <div className="flex gap-1 mt-2">
+            {slides.map((_, i) => (
+              <span
+                key={i}
+                className="block h-0.5 flex-1 rounded-full transition-colors duration-300"
+                style={{ background: i === current ? '#fff' : 'rgba(255,255,255,0.35)' }}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
 
 // ─── Komponente ───────────────────────────────────────────────────────────────
 
@@ -406,24 +717,85 @@ export default function OnepagerPage() {
               Echte Arbeit. Echte Bilder.
             </h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-            {[
-              { src: imgTrainingKorrektur, alt: 'Lea Kurbitz bei der Übungskorrektur', offset: false },
-              { src: imgPhysiobox,        alt: 'Gruppentraining in der PhysioBox MG', offset: true },
-              { src: imgSportfest,        alt: 'Lea Kurbitz bei der Vereinsbetreuung', offset: false },
-              { src: imgSpagat,           alt: 'Lea Kurbitz zeigt Beweglichkeit', offset: true },
-            ].map((img) => (
-              <div
-                key={img.src}
-                className={`aspect-[3/4] rounded-2xl overflow-hidden${img.offset ? ' md:mt-8' : ''}`}
+          {/* Row 1: landscape + tall portrait */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+            <SlideshowCard
+              label="Vereinsbetreuung"
+              className="col-span-2 md:col-span-2 aspect-video"
+              slides={[
+                { src: imgVereinHandballMg,        alt: 'Handball-Gruppe im PhysioBox MG',              position: 'center 55%' },
+                { src: imgVereinHandballGross,      alt: 'Große Handballgruppe im PhysioBox MG',         position: 'center 50%' },
+                { src: imgVereinHandballTeam,       alt: 'Handballteam mit Lea',                         position: 'center 55%' },
+                { src: imgVereinJugendFussball,     alt: 'Jugendfußballmannschaft mit Lea',              position: 'center 40%' },
+                { src: imgVereinFootballTeam,       alt: 'American-Football-Team mit Lea',               position: 'center 60%' },
+                { src: imgVereinFootballOffiziell,  alt: 'Offizielles Football-Mannschaftsfoto',         position: 'center 60%' },
+                { src: imgVereinFootballWiese,      alt: 'Football-Verein auf der Wiese',                position: 'center 55%' },
+                { src: imgVereinFootballJugend,     alt: 'Football-Jugendmannschaft mit Lea',            position: 'center 50%' },
+                { src: imgVereinFootballSpiel,      alt: 'Betreuung am Spielfeldrand beim Football',     position: 'center top' },
+                { src: imgVereinGrossgruppe,        alt: 'Großes Vereinsteam',                           position: 'center center' },
+                { src: imgVereinRugbyDamen,         alt: 'Damen-Rugbymannschaft',                        position: 'center 55%' },
+                { src: imgVereinRugbyHerren,        alt: 'Herren-Rugbymannschaft',                       position: 'center 60%' },
+                { src: imgVereinRugbyEvent,         alt: 'Lea beim Rugby-Sportevent',                    position: 'center 30%' },
+              ]}
+            />
+            <SlideshowCard
+              label="Training"
+              className="col-span-2 md:col-span-1 md:row-span-2 aspect-[3/4]"
+              slides={[
+                { src: imgTrainingBosuSenior,    alt: 'Balancetraining mit Seniorin auf Bosu',     position: '40% center' },
+                { src: imgTrainingKorrekturGym,  alt: 'Übungskorrektur im Fitnessstudio',          position: 'center center' },
+                { src: imgTrainingBosuBall,      alt: 'Einbeinstand mit Medizinball auf Bosu',     position: 'center center' },
+                { src: imgTrainingBosuSquad,     alt: 'Gruppentraining auf Bosu',                  position: 'center 40%' },
+                { src: imgTrainingMedball,       alt: 'Lea mit Ledermedizinball',                  position: '55% 35%' },
+                { src: imgTrainingMedballBosu,   alt: 'Medizinball-Training auf Bosu',             position: 'center 40%' },
+                { src: imgTrainingSpagat,        alt: 'Lea im Spagat',                             position: 'center 50%' },
+                { src: imgTrainingStraddle,      alt: 'Lea im tiefen Straddle-Stretch',            position: 'center 70%' },
+              ]}
+            />
+            <SlideshowCard
+              label="Physiotherapie"
+              className="aspect-[3/4]"
+              slides={[
+                { src: imgBehandlungKnie,  alt: 'Kniebehandlung in der Praxis',                   position: '40% center' },
+                { src: imgBehandlungZelt,  alt: 'Behandlung am Sportfest unter dem Zelt',         position: '60% 35%' },
+                { src: imgBehandlungLiege, alt: 'Behandlung auf der Physiotherapieliege',         position: 'center center' },
+              ]}
+            />
+            <SlideshowCard
+              label="Über Lea"
+              className="aspect-[3/4]"
+              slides={[
+                { src: imgPortraitSchlitten,  alt: 'Lea am ATX-Schlitten im Fitnessstudio',       position: 'center 30%' },
+                { src: imgPortraitRasen,      alt: 'Lea auf dem Rasenplatz',                      position: 'center 55%' },
+                { src: imgPortraitSportplatz, alt: 'Lea am Sportplatz',                           position: 'center 50%' },
+                { src: imgPortraitTrikot,     alt: 'Lea im Vereinstrikot',                        position: 'center 30%' },
+              ]}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ── LEAD FUNNEL ──────────────────────────────────────────────────── */}
+      <section id="anfrage" className="section-py bg-[var(--color-dark-section)]">
+        <div className="container">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-start">
+            <div>
+              <p className="text-[var(--color-accent)] text-xs font-semibold tracking-[0.2em] uppercase mb-4">
+                Kostenlose Anfrage
+              </p>
+              <h2
+                className="font-heading font-bold text-white mb-5"
+                style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}
               >
-                <img
-                  src={img.src}
-                  alt={img.alt}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ))}
+                Lass uns herausfinden, wie ich dir helfen kann.
+              </h2>
+              <p className="text-white/60 leading-relaxed">
+                Ein paar Fragen — und ich melde mich persönlich bei dir. Kein automatischer Termin, kein Call-Center. Nur Lea.
+              </p>
+            </div>
+            <div>
+              <LeadFunnel />
+            </div>
           </div>
         </div>
       </section>
