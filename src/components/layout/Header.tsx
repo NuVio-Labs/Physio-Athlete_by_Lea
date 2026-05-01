@@ -19,12 +19,13 @@ interface HeaderProps {
 
 export default function Header({ minimal = false }: HeaderProps) {
   const [menuOpen, setMenuOpen]   = useState(false)
-  const [scrolled, setScrolled]   = useState(false)
+  const [scrolled, setScrolled]   = useState(() => window.scrollY > 50)
   const { pathname }              = useLocation()
   const isHome                    = pathname === '/' || pathname === ''
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50)
+    onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -34,11 +35,11 @@ export default function Header({ minimal = false }: HeaderProps) {
     return () => { document.body.style.overflow = '' }
   }, [menuOpen])
 
-  const bgClass = scrolled || !isHome || minimal
+  const bgClass = scrolled || !isHome || minimal || menuOpen
     ? 'bg-white/95 backdrop-blur-sm shadow-sm'
     : 'bg-transparent'
 
-  const textClass = scrolled || !isHome || minimal
+  const textClass = scrolled || !isHome || minimal || menuOpen
     ? 'text-[var(--color-text-primary)]'
     : 'text-white'
 
