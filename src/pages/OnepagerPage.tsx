@@ -1,5 +1,12 @@
 import { Helmet } from 'react-helmet-async'
 import Button from '../components/ui/Button'
+import imgHero from '../assets/images/hero-behandlung.webp'
+import imgPortrait from '../assets/images/portrait-lea.webp'
+import imgTrainingSenioren from '../assets/images/training-senioren.webp'
+import imgTrainingHighfive from '../assets/images/training-highfive.webp'
+import imgPhysiobox from '../assets/images/einblicke-physiobox.webp'
+import imgSportfest from '../assets/images/einblicke-sportfest.webp'
+import imgSpagat from '../assets/images/einblicke-spagat.webp'
 
 // ─── Daten ────────────────────────────────────────────────────────────────────
 
@@ -157,7 +164,7 @@ export default function OnepagerPage() {
             aria-hidden="true"
           />
           <img
-            src="/images/hero-behandlung.webp"
+            src={imgHero}
             alt="Lea Kurbitz – Sportphysiotherapeutin bei der aktiven Betreuung"
             className="w-full h-full object-cover object-top opacity-70"
           />
@@ -201,7 +208,7 @@ export default function OnepagerPage() {
             <div className="order-1 md:order-2">
               <div className="aspect-[3/4] max-w-sm mx-auto md:mx-0 md:ml-auto rounded-2xl overflow-hidden">
                 <img
-                  src="/images/portrait-lea.webp"
+                  src={imgPortrait}
                   alt="Lea Kurbitz – Portrait"
                   className="w-full h-full object-cover object-top"
                 />
@@ -375,7 +382,7 @@ export default function OnepagerPage() {
 
             <div className="aspect-[4/3] rounded-2xl overflow-hidden">
               <img
-                src="/images/training-senioren.webp"
+                src={imgTrainingSenioren}
                 alt="Lea Kurbitz beim mobilen Training"
                 className="w-full h-full object-cover"
               />
@@ -400,10 +407,10 @@ export default function OnepagerPage() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             {[
-              { src: '/images/training-highfive.webp',   alt: 'Lea Kurbitz beim Personal Training', offset: false },
-              { src: '/images/einblicke-physiobox.webp', alt: 'Gruppentraining in der PhysioBox MG', offset: true },
-              { src: '/images/einblicke-sportfest.webp', alt: 'Lea Kurbitz bei der Vereinsbetreuung', offset: false },
-              { src: '/images/einblicke-spagat.webp',    alt: 'Lea Kurbitz zeigt Beweglichkeit', offset: true },
+              { src: imgTrainingHighfive, alt: 'Lea Kurbitz beim Personal Training', offset: false },
+              { src: imgPhysiobox,        alt: 'Gruppentraining in der PhysioBox MG', offset: true },
+              { src: imgSportfest,        alt: 'Lea Kurbitz bei der Vereinsbetreuung', offset: false },
+              { src: imgSpagat,           alt: 'Lea Kurbitz zeigt Beweglichkeit', offset: true },
             ].map((img) => (
               <div
                 key={img.src}
