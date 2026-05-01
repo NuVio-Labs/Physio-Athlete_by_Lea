@@ -65,18 +65,19 @@ const audiences = [
 const qualifications = [
   { year: '2021', label: 'Staatliches Examen Physiotherapie' },
   { year: '2023', label: 'Sport-Physiotherapie – SPT Education' },
-  { year: '',     label: 'KGG – Krankengymnastik am Gerät' },
-  { year: '',     label: 'MLD – Manuelle Lymphdrainage' },
-  { year: '',     label: 'C-Trainer Breitensport / Fitnesstrainer' },
-  { year: '',     label: 'Übungsleiter B Reha & Orthopädie' },
-  { year: '',     label: 'ZPP-Zulassung – Präventionskurse § 20' },
+  { year: '2025', label: 'Concussion Therapeutin' },
+  { year: '2022', label: 'KGG – Krankengymnastik am Gerät' },
+  { year: '2022', label: 'MLD – Manuelle Lymphdrainage' },
+  { year: '2016', label: 'C-Trainer Breitensport / Fitnesstrainer' },
+  { year: '2019', label: 'Übungsleiter B Reha & Orthopädie' },
+  { year: '2016', label: 'ZPP-Zulassung – Präventionskurse § 20' },
 ]
 
 const regions = [
-  { name: 'Leverkusen',     note: 'Schwerpunkt' },
-  { name: 'Köln',           note: '' },
-  { name: 'Mönchengladbach',note: '' },
-  { name: 'Viersen',        note: '' },
+  { name: 'Leverkusen',      note: '' },
+  { name: 'Köln',            note: '' },
+  { name: 'Mönchengladbach', note: '' },
+  { name: 'Viersen',         note: '' },
 ]
 
 // ─── Komponente ───────────────────────────────────────────────────────────────
