@@ -3,7 +3,7 @@ import Button from '../components/ui/Button'
 import imgHero from '../assets/images/hero-behandlung.webp'
 import imgPortrait from '../assets/images/portrait-lea.webp'
 import imgTrainingSenioren from '../assets/images/training-senioren.webp'
-import imgTrainingHighfive from '../assets/images/training-highfive.webp'
+import imgTrainingKorrektur from '../assets/images/einblicke-training-korrektur.webp'
 import imgPhysiobox from '../assets/images/einblicke-physiobox.webp'
 import imgSportfest from '../assets/images/einblicke-sportfest.webp'
 import imgSpagat from '../assets/images/einblicke-spagat.webp'
@@ -407,7 +407,7 @@ export default function OnepagerPage() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             {[
-              { src: imgTrainingHighfive, alt: 'Lea Kurbitz beim Personal Training', offset: false },
+              { src: imgTrainingKorrektur, alt: 'Lea Kurbitz bei der Übungskorrektur', offset: false },
               { src: imgPhysiobox,        alt: 'Gruppentraining in der PhysioBox MG', offset: true },
               { src: imgSportfest,        alt: 'Lea Kurbitz bei der Vereinsbetreuung', offset: false },
               { src: imgSpagat,           alt: 'Lea Kurbitz zeigt Beweglichkeit', offset: true },
