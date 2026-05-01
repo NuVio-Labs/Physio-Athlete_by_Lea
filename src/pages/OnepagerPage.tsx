@@ -63,14 +63,14 @@ const audiences = [
 ]
 
 const qualifications = [
+  { year: '2016', label: 'C-Trainer Breitensport / Fitnesstrainer' },
+  { year: '2016', label: 'ZPP-Zulassung – Präventionskurse § 20' },
+  { year: '2019', label: 'Übungsleiter B Reha & Orthopädie' },
   { year: '2021', label: 'Staatliches Examen Physiotherapie' },
-  { year: '2023', label: 'Sport-Physiotherapie – SPT Education' },
-  { year: '2025', label: 'Concussion Therapeutin' },
   { year: '2022', label: 'KGG – Krankengymnastik am Gerät' },
   { year: '2022', label: 'MLD – Manuelle Lymphdrainage' },
-  { year: '2016', label: 'C-Trainer Breitensport / Fitnesstrainer' },
-  { year: '2019', label: 'Übungsleiter B Reha & Orthopädie' },
-  { year: '2016', label: 'ZPP-Zulassung – Präventionskurse § 20' },
+  { year: '2023', label: 'Sport-Physiotherapie – SPT Education' },
+  { year: '2025', label: 'Concussion Therapeutin' },
 ]
 
 const regions = [
