@@ -6,7 +6,7 @@ import ImpressumPage from './pages/ImpressumPage'
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/Physio-Athlete_by_Lea">
       <Routes>
         <Route
           path="/"
