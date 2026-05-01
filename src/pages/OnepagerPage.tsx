@@ -94,7 +94,7 @@ const audiences = [
 
 const qualifications = [
   { year: '2016', label: 'C-Trainer Breitensport / Fitnesstrainer' },
-  { year: '2016', label: 'ZPP-Zulassung – Präventionskurse § 20' },
+  { year: '2026', label: 'ZPP-Zulassung – Präventionskurse § 20' },
   { year: '2019', label: 'Übungsleiter B Reha & Orthopädie' },
   { year: '2021', label: 'Staatliches Examen Physiotherapie' },
   { year: '2022', label: 'KGG – Krankengymnastik am Gerät' },
@@ -442,8 +442,8 @@ export default function OnepagerPage() {
               Physio Athlete by Lea Kurbitz
             </p>
             <h1
-              className="font-heading font-bold text-white leading-[1.08] mb-6"
-              style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)' }}
+              className="font-heading font-bold text-white leading-[1.08] mb-6 break-words"
+              style={{ fontSize: 'clamp(1.75rem, 6vw, 5rem)' }}
             >
               Sportphysiotherapie.<br />
               <span className="text-[var(--color-accent)]">Persönlich.</span> Mobil.
