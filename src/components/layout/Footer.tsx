@@ -13,7 +13,7 @@ export default function Footer() {
             </p>
             <p className="text-xs text-white/40 mb-4">Lea Kurbitz</p>
             <p className="text-sm leading-relaxed">
-              Sportphysiotherapie, Leistungsdiagnostik und persönliche Betreuung – mobil in Leverkusen, Köln, Mönchengladbach und Viersen.
+              Sportphysiotherapie, Leistungsdiagnostik und persönliche Betreuung. Mobil in Leverkusen, Köln, Mönchengladbach und Viersen.
             </p>
           </div>
 

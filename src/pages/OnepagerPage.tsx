@@ -791,7 +791,7 @@ export default function OnepagerPage() {
                 Lass uns herausfinden, wie ich dir helfen kann.
               </h2>
               <p className="text-white/60 leading-relaxed">
-                Ein paar Fragen — und ich melde mich persönlich bei dir. Kein automatischer Termin, kein Call-Center. Nur Lea.
+                Ein paar Fragen, und ich melde mich persönlich bei dir. Kein automatischer Termin, kein Call-Center. Nur Lea.
               </p>
             </div>
             <div>
