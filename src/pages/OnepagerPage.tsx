@@ -176,7 +176,8 @@ function LeadFunnel() {
 
   const zielOptions = [
     'Abnehmen', 'Zunehmen', 'Muskelaufbau', 'Gesündere Lebensweise',
-    'Running', 'Hyrox', 'Triathlon', 'Andere athletische Sportarten',
+    'Running', 'Hyrox', 'Triathlon', 'Football', 'Handball',
+    'Andere athletische Sportarten',
   ]
   const geschlechtOptions = ['Weiblich', 'Männlich', 'Divers']
   const alterOptions = ['14–18', '18–24', '25–34', '35–44', '45+']
