@@ -53,6 +53,7 @@ export default function Header({ minimal = false }: HeaderProps) {
   }
 
   return (
+    <>
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${bgClass}`}>
       <div className="container">
         <div className="flex items-center justify-between h-16 md:h-20">
@@ -109,9 +110,14 @@ export default function Header({ minimal = false }: HeaderProps) {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+    </header>
+
+      {/* Mobile Menu — außerhalb des header damit fixed korrekt zum Viewport positioniert */}
       {!minimal && menuOpen && (
-        <div className="md:hidden fixed inset-0 top-16 bg-white z-40 overflow-y-auto">
+        <div
+          className="md:hidden bg-white overflow-y-auto"
+          style={{ position: 'fixed', top: '64px', left: 0, right: 0, bottom: 0, zIndex: 9999 }}
+        >
           <nav className="container py-8 flex flex-col gap-1" aria-label="Mobile Navigation">
             {navItems.map((item) => (
               <button
@@ -134,6 +140,6 @@ export default function Header({ minimal = false }: HeaderProps) {
           </nav>
         </div>
       )}
-    </header>
+    </>
   )
 }
