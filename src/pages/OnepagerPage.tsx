@@ -192,7 +192,7 @@ export default function OnepagerPage() {
                 Hi, ich bin Lea.
               </h2>
               <p className="text-[var(--color-text-secondary)] leading-relaxed mb-4">
-                Als Sportphysiotherapeutin und Trainerin begleite ich Menschen, die aktiv an sich arbeiten wollen. Nicht nur kurzfristig Beschwerden loswerden, sondern den Körper langfristig stärken und belastbarer machen.
+                Als Sportphysiotherapeutin und Trainerin begleite ich Menschen, die aktiv an sich arbeiten wollen. Nicht nur kurzfristig Beschwerden loszuwerden, sondern den Körper langfristig stärken und belastbarer machen.
               </p>
               <p className="text-[var(--color-text-secondary)] leading-relaxed mb-8">
                 Ich arbeite mobil: bei dir zuhause, auf Vereinsgeländen, im Freien oder in gemieteten Räumen. Kein starrer Praxisrahmen, sondern Betreuung, die zu deinem Alltag passt.
@@ -358,7 +358,7 @@ export default function OnepagerPage() {
                 Ich komme zu dir
               </h2>
               <p className="text-[var(--color-text-secondary)] leading-relaxed mb-8">
-                Kein Pendelstress, keine Praxissuche. Ich arbeite mobil und komme zu dir: bei dir zuhause, auf dem Vereinsgelände, outdoors oder in einem Raum deiner Wahl.
+                Kein Pendelstress, keine Praxissuche. Ich arbeite mobil und komme zu dir: bei dir zuhause, auf dem Vereinsgelände, outdoor oder in einem Raum deiner Wahl.
               </p>
               <div className="flex flex-wrap gap-3 mb-8">
                 {regions.map((r) => (
@@ -464,10 +464,10 @@ export default function OnepagerPage() {
                 className="font-heading font-bold text-[var(--color-text-primary)] mb-5"
                 style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}
               >
-                Fragen? Meld dich.
+                Fragen? Melde dich.
               </h2>
               <p className="text-[var(--color-text-secondary)] leading-relaxed mb-8">
-                Ob Fragen zum Angebot, zur Abrechnung mit der Krankenkasse oder zur Vereinsbetreuung: schreib einfach oder ruf an. Ich antworte in der Regel innerhalb von 1 bis 2 Werktagen.
+                Ob Fragen zum Angebot, zur Abrechnung mit der Krankenkasse oder zur Vereinsbetreuung: Schreib einfach oder ruf an. Ich antworte in der Regel innerhalb von 1 bis 2 Werktagen.
               </p>
 
               <ul className="flex flex-col gap-4">
