@@ -450,7 +450,7 @@ export default function OnepagerPage() {
               <span className="text-[var(--color-accent)]">Persönlich.</span> Mobil.
             </h1>
             <p className="text-white/60 text-base md:text-lg leading-relaxed mb-10 max-w-lg">
-              Aktive Betreuung für sportliche Menschen in Leverkusen, Köln, Mönchengladbach und Viersen. Bei dir zuhause, im Verein oder outdoors.
+              Aktive Betreuung für sportliche Menschen in Leverkusen, Köln, Mönchengladbach und Viersen. Bei dir zuhause, im Verein oder draußen.
             </p>
             <div className="flex flex-wrap gap-4">
               <Button href="https://app.cituro.com/booking/5310318" external size="lg">
