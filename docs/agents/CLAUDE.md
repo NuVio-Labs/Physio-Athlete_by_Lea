@@ -21,9 +21,25 @@ Die Website ist live unter **physio-athlete.de**, gehostet auf **Vercel**, verbu
 ## Seitenstruktur
 Onepager mit React Router für Unterseiten:
 
-- `/` — Onepager (Hero, Über mich, Leistungen, Für wen, Qualifikationen, Regionen, Einblicke, Anfrage-Funnel, Buchungs-CTA, Kontakt)
+- `/` — Onepager (Hero, Über mich, Leistungen, Für wen, Qualifikationen, Regionen, Einblicke, FAQ, Anfrage-Funnel, Buchungs-CTA, Kontakt)
 - `/impressum` — Impressum
 - `/datenschutz` — Datenschutzerklärung
+- `/agb` — AGB
+
+## SEO & AEO (Stand: August 2026)
+- Jede Route hat eigenes `<Helmet>` (Title, Description, Canonical, robots) — siehe `ImpressumPage.tsx` (`pageMeta`) und `OnepagerPage.tsx`
+- Canonical-Domain: **physio-athlete.de** (nicht leakurbitz.de!)
+- `public/robots.txt` + `public/sitemap.xml` vorhanden
+- Statische OG-/Twitter-Tags in `index.html` (nicht nur via Helmet, da Social-Crawler kein JS ausführen)
+- `public/og-image.png` (1200×630) generiert aus `portrait-lea.webp` — bei Rebrand neu generieren
+- JSON-LD: `MedicalBusiness`-Schema + `FAQPage`-Schema in `OnepagerPage.tsx` (Helmet-Block)
+- FAQ-Sektion (`faqs`-Array in `OnepagerPage.tsx`) versorgt sowohl sichtbaren Content als auch FAQPage-Schema für AEO (ChatGPT/Perplexity/Google AI Overviews)
+- `public/manifest.json`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png` generiert aus `favicon.svg`
+
+## Performance
+- `SlideshowCard` (Einblicke-Galerie) rendert nur aktuelles + nächstes Bild (nicht alle Slides gleichzeitig) + `loading="lazy"`
+- Hero-Bild: `fetchPriority="high"` (LCP), restliche Bilder unterhalb des Folds: `loading="lazy"`
+- LeadFunnel: Honeypot-Feld (`website`) + E-Mail-Regex-Validierung gegen Spam
 
 ## Kontaktdaten (Impressum)
 - **Name:** Lea Kurbitz / Physio Athlete by Lea

@@ -25,6 +25,7 @@ export default function Footer() {
                 { label: 'Leistungen',      href: '#leistungen' },
                 { label: 'Über mich',       href: '#ueber-mich' },
                 { label: 'Qualifikationen', href: '#qualifikationen' },
+                { label: 'FAQ',             href: '#faq' },
                 { label: 'Kontakt',         href: '#kontakt' },
               ].map((item) => (
                 <li key={item.href}>
@@ -90,6 +91,7 @@ export default function Footer() {
           <div className="flex gap-4">
             <Link to="/impressum" className="hover:text-white/60 transition-colors">Impressum</Link>
             <Link to="/datenschutz" className="hover:text-white/60 transition-colors">Datenschutz</Link>
+            <Link to="/agb" className="hover:text-white/60 transition-colors">AGB</Link>
           </div>
         </div>
       </div>

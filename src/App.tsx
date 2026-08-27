@@ -44,6 +44,18 @@ export default function App() {
             </>
           }
         />
+        <Route
+          path="/agb"
+          element={
+            <>
+              <Header minimal />
+              <main id="main-content" className="pt-24 pb-20">
+                <ImpressumPage agb />
+              </main>
+              <Footer />
+            </>
+          }
+        />
       </Routes>
     </BrowserRouter>
   )

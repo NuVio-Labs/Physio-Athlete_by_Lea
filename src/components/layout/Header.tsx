@@ -5,6 +5,7 @@ const navItems = [
   { label: 'Leistungen',      href: '#leistungen' },
   { label: 'Über mich',       href: '#ueber-mich' },
   { label: 'Qualifikationen', href: '#qualifikationen' },
+  { label: 'FAQ',             href: '#faq' },
   { label: 'Kontakt',         href: '#kontakt' },
 ]
 

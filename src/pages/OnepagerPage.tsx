@@ -110,6 +110,33 @@ const regions = [
   { name: 'Viersen',         note: '' },
 ]
 
+const faqs = [
+  {
+    question: 'In welchen Städten bist du tätig?',
+    answer: 'Ich arbeite mobil in Leverkusen, Köln, Mönchengladbach und Viersen sowie im Umkreis – bei dir zuhause, auf Vereinsgeländen, im Freien oder in gemieteten Räumen.',
+  },
+  {
+    question: 'Übernimmt die Krankenkasse die Kosten?',
+    answer: 'Die Präventionskurse nach § 20 SGB V werden von den gesetzlichen Krankenkassen bezuschusst. Ob und in welcher Höhe deine Kasse die Kosten übernimmt, klärst du am besten direkt mit ihr. Personal Training und Vereinsbetreuung sind Privatleistungen.',
+  },
+  {
+    question: 'Wie kann ich einen Termin buchen?',
+    answer: 'Am schnellsten über das Online-Buchungssystem Cituro. Alternativ kannst du das Anfrage-Formular auf dieser Seite nutzen, dann melde ich mich persönlich innerhalb von 24 Stunden bei dir.',
+  },
+  {
+    question: 'Was kostet eine Behandlung oder ein Personal Training?',
+    answer: 'Die aktuellen Preise für alle Leistungen findest du direkt im Buchungssystem. Bei individuellen Anfragen, etwa zur Vereinsbetreuung, erstelle ich dir gerne ein passendes Angebot.',
+  },
+  {
+    question: 'Wie kurzfristig kann ich einen Termin absagen?',
+    answer: 'Einzeltermine kannst du bis 24 Stunden vorher kostenfrei absagen, Gruppentermine wie Camps oder Workshops bis 7 Tage vorher. Bei einer späteren Absage berechne ich 75% des Terminpreises als Ausfallgebühr.',
+  },
+  {
+    question: 'Bietest du auch Betreuung für Vereine und Teams an?',
+    answer: 'Ja. Ich betreue Vereine und Teams direkt auf dem Trainingsgelände – von Prävention über Schnelldiagnostik bis zur Begleitung im Wettkampfbetrieb, unter anderem im Football, Handball und Rugby.',
+  },
+]
+
 // ─── LeadFunnel ───────────────────────────────────────────────────────────────
 
 const WEB3FORMS_KEY = 'c0affb53-cb99-4cba-986f-d18b46f5456d'
@@ -131,9 +158,12 @@ const initialData: FunnelData = {
   vorname: '', nachname: '', beruf: '', telefon: '', email: '',
 }
 
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 function LeadFunnel() {
   const [step, setStep] = useState(0)
   const [data, setData] = useState<FunnelData>(initialData)
+  const [honeypot, setHoneypot] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
@@ -143,6 +173,15 @@ function LeadFunnel() {
   }
 
   async function submit() {
+    // Honeypot: unsichtbares Feld, das nur Bots ausfüllen. Stille Fake-Bestätigung.
+    if (honeypot) {
+      setSubmitted(true)
+      return
+    }
+    if (!emailPattern.test(data.email)) {
+      setError('Bitte gib eine gültige E-Mail-Adresse ein.')
+      return
+    }
     setSubmitting(true)
     setError('')
     try {
@@ -315,7 +354,7 @@ function LeadFunnel() {
         <div>
           <h3 className="font-heading font-bold text-white text-xl md:text-2xl mb-2">Bitte trage hier deine Daten ein</h3>
           <p className="text-white/50 text-sm mb-6"> </p>
-          <div className="flex flex-col gap-3 mb-8">
+          <div className="relative flex flex-col gap-3 mb-8">
             <div className="grid grid-cols-2 gap-3">
               <input value={data.vorname} onChange={e => set('vorname', e.target.value)} placeholder="Vorname" className={inputCls} />
               <input value={data.nachname} onChange={e => set('nachname', e.target.value)} placeholder="Nachname" className={inputCls} />
@@ -327,13 +366,23 @@ function LeadFunnel() {
             </select>
             <input value={data.telefon} onChange={e => set('telefon', e.target.value)} placeholder="Telefonnummer" type="tel" className={inputCls} />
             <input value={data.email} onChange={e => set('email', e.target.value)} placeholder="E-Mail-Adresse" type="email" className={inputCls} />
+            {/* Honeypot: für Menschen unsichtbar, Bots füllen es aus */}
+            <input
+              value={honeypot}
+              onChange={e => setHoneypot(e.target.value)}
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              className="absolute top-0 left-0 w-px h-px opacity-0 pointer-events-none -z-10"
+            />
           </div>
-          {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
+          {error && <p className="text-red-400 text-sm mb-4" role="alert">{error}</p>}
           <div className="flex gap-3">
             <button onClick={() => setStep(3)} className="px-6 py-3 rounded-full border border-white/30 text-white text-sm font-medium hover:border-white/60 transition-colors">← Zurück</button>
             <button
               onClick={submit}
-              disabled={submitting || !data.vorname || !data.email}
+              disabled={submitting || !data.vorname || !emailPattern.test(data.email)}
               className="px-8 py-3 rounded-full bg-[var(--color-accent)] text-white font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {submitting ? 'Wird gesendet…' : 'Absenden →'}
@@ -360,20 +409,30 @@ function SlideshowCard({ label, slides, className = '' }: { label: string; slide
     return () => clearTimeout(timer)
   }, [current, slides.length])
 
+  // Nur aktuelles + nächstes Bild rendern (statt aller Slides gleichzeitig),
+  // damit nicht 8-13 Bilder pro Karte auf einmal geladen werden.
+  const next = (current + 1) % slides.length
+  const visible = slides.length <= 1 ? [0] : Array.from(new Set([current, next]))
+
   return (
     <div className={`relative rounded-2xl overflow-hidden ${className}`}>
-      {slides.map((slide, i) => (
-        <img
-          key={slide.src}
-          src={slide.src}
-          alt={slide.alt}
-          className={`w-full h-full object-cover transition-opacity duration-700 ease-in-out ${i === 0 ? 'relative block' : 'absolute inset-0'}`}
-          style={{
-            opacity: i === current ? 1 : 0,
-            objectPosition: slide.position ?? 'center top',
-          }}
-        />
-      ))}
+      {visible.map((i) => {
+        const slide = slides[i]
+        return (
+          <img
+            key={slide.src}
+            src={slide.src}
+            alt={slide.alt}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out"
+            style={{
+              opacity: i === current ? 1 : 0,
+              objectPosition: slide.position ?? 'center top',
+            }}
+          />
+        )
+      })}
       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-4 z-10">
         <span className="text-white text-xs font-semibold tracking-widest uppercase">{label}</span>
         {slides.length > 1 && (
@@ -404,7 +463,57 @@ export default function OnepagerPage() {
           content="Sportphysiotherapie, Leistungsdiagnostik, Präventionskurse und Personal Training in Leverkusen, Köln, Mönchengladbach und Viersen. Jetzt Termin buchen."
         />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://leakurbitz.de/" />
+        <link rel="canonical" href="https://physio-athlete.de/" />
+
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'MedicalBusiness',
+            name: 'Physio Athlete by Lea',
+            image: 'https://physio-athlete.de/og-image.png',
+            url: 'https://physio-athlete.de/',
+            telephone: '+4915785742140',
+            email: 'leakurbitz@physio-athlete.de',
+            address: {
+              '@type': 'PostalAddress',
+              streetAddress: 'Brentanostraße 31',
+              postalCode: '41352',
+              addressLocality: 'Korschenbroich',
+              addressCountry: 'DE',
+            },
+            areaServed: ['Leverkusen', 'Köln', 'Mönchengladbach', 'Viersen', 'Korschenbroich'],
+            priceRange: '€€',
+            sameAs: ['https://www.instagram.com/physio_athlete_by_lea'],
+            founder: {
+              '@type': 'Person',
+              name: 'Lea Kurbitz',
+              jobTitle: 'Sportphysiotherapeutin',
+            },
+            makesOffer: services.map(s => ({
+              '@type': 'Offer',
+              itemOffered: {
+                '@type': 'Service',
+                name: s.title,
+                description: s.description,
+              },
+            })),
+          })}
+        </script>
+
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: faqs.map(f => ({
+              '@type': 'Question',
+              name: f.question,
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: f.answer,
+              },
+            })),
+          })}
+        </script>
       </Helmet>
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
@@ -480,6 +589,9 @@ export default function OnepagerPage() {
             src={imgHero}
             alt="Lea Kurbitz – Sportphysiotherapeutin bei der aktiven Betreuung"
             className="w-full h-full object-cover object-top opacity-70"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
           />
           {/* Unterer Fade ins Weiß der nächsten Section */}
           <div
@@ -523,6 +635,8 @@ export default function OnepagerPage() {
                 <img
                   src={imgPortrait}
                   alt="Lea Kurbitz – Portrait"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover object-top"
                 />
               </div>
@@ -697,6 +811,8 @@ export default function OnepagerPage() {
               <img
                 src={imgTrainingSenioren}
                 alt="Lea Kurbitz beim mobilen Training"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover"
               />
             </div>
@@ -821,6 +937,41 @@ export default function OnepagerPage() {
           >
             Jetzt Termin buchen →
           </Button>
+        </div>
+      </section>
+
+      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
+      <section id="faq" className="section-py bg-white">
+        <div className="container">
+          <div className="max-w-xl mb-10">
+            <p className="text-[var(--color-accent)] text-xs font-semibold tracking-[0.2em] uppercase mb-4">
+              Häufige Fragen
+            </p>
+            <h2
+              className="font-heading font-bold text-[var(--color-text-primary)]"
+              style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}
+            >
+              Gut zu wissen.
+            </h2>
+          </div>
+          <div className="max-w-3xl divide-y divide-[var(--color-border-soft)]">
+            {faqs.map((faq) => (
+              <details key={faq.question} className="group py-5">
+                <summary className="flex items-center justify-between gap-4 cursor-pointer list-none font-heading font-semibold text-[var(--color-text-primary)] text-base md:text-lg">
+                  {faq.question}
+                  <svg
+                    className="w-5 h-5 flex-shrink-0 text-[var(--color-accent)] transition-transform duration-200 group-open:rotate-45"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" d="M12 4v16m8-8H4" />
+                  </svg>
+                </summary>
+                <p className="text-[var(--color-text-secondary)] leading-relaxed text-sm mt-3">
+                  {faq.answer}
+                </p>
+              </details>
+            ))}
+          </div>
         </div>
       </section>
 
