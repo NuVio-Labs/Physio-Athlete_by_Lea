@@ -22,16 +22,16 @@ export default function Footer() {
             <p className="font-heading font-semibold text-white text-xs uppercase tracking-widest mb-4">Navigation</p>
             <ul className="flex flex-col gap-2">
               {[
-                { label: 'Leistungen',      href: '#leistungen' },
-                { label: 'Über mich',       href: '#ueber-mich' },
-                { label: 'Qualifikationen', href: '#qualifikationen' },
-                { label: 'FAQ',             href: '#faq' },
-                { label: 'Kontakt',         href: '#kontakt' },
+                { label: 'Leistungen',      href: '/#leistungen' },
+                { label: 'Über mich',       href: '/#ueber-mich' },
+                { label: 'Qualifikationen', href: '/#qualifikationen' },
+                { label: 'FAQ',             href: '/#faq' },
+                { label: 'Kontakt',         href: '/#kontakt' },
               ].map((item) => (
                 <li key={item.href}>
-                  <a href={item.href} className="text-sm hover:text-white transition-colors">
+                  <Link to={item.href} className="text-sm hover:text-white transition-colors">
                     {item.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

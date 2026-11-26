@@ -1,12 +1,14 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
+import ScrollToLocation from './components/layout/ScrollToLocation'
 import OnepagerPage from './pages/OnepagerPage'
 import ImpressumPage from './pages/ImpressumPage'
 
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToLocation />
       <Routes>
         <Route
           path="/"
